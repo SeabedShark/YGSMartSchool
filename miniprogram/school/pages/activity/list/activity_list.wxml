@@ -1,0 +1,70 @@
+<block wx:if="{{isAdmin}}">
+	<ccmini-cmpt-comm-list type="admin-news" search="{{search}}" _menus="{{sortMenus}}" _items="{{sortItems}}"
+		router="admin/news_list" topBottom="50" placeholder="搜索内容标题" returnUrl='admin/admin_news_list'
+		bind:myCommListEvent="myCommListListener">
+
+			<!-- List Begin -->
+			<view class="main-admin">
+			<view class="list">
+
+				<view class="item shadow" wx:for="{{activities}}" wx:key="ACTIVITY_TITLE">
+					<view class='activity-item'>
+					<image class="activity-poster" src="{{item.ACTIVITY_POSTER}}" mode="aspectFit"></image>
+						<view class="activity-info">
+							<view class="title">
+								<text selectable="true"> 
+									<text class="text-purple margin-right-xs">[{{item.ACTIVITY_TYPE}}]</text>{{item.ACTIVITY_TITLE}}
+								</text>
+							</view>
+							<text class="activity-time">活动报名截止时间：{{item.ACTIVITY_SIGN_STOP_TIME}} </text>
+							<text class="activity-time">
+								活动时间：{{item.ACTIVITY_START_TIME}} - {{item.ACTIVITY_END_TIME}}</text>
+							<text class="activity-address">
+								地点：{{item.ACTIVITY_ADDRESS}}</text>
+							<view class="activity-reward">积分：+{{item.ACTIVITY_SCORE}}</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!-- List END -->
+
+		<!--load begin-->
+		<import src="../../../ccmini-tpls/public/list_load_tpl.wxml" />
+		<template is="listLoadTpl" data="{{dataList}}" />
+		<!--load end-->
+
+	</ccmini-cmpt-comm-list>
+
+
+	<!-- news detail begin -->
+	<view wx:if="{{detail}}" class="modal-admin modal show" catchtouchmove="true">
+		<view class="dialog">
+			<view class="bar bg-white justify-end">
+				<view class="content">互动详情</view>
+				<view class="action" bindtap="bindHideDetailModalTap">
+					<text class="icon-close text-red"></text>
+				</view>
+			</view>
+			<view class="padding-xl">
+				<scroll-view scroll-y="true" class="modal-content">
+					<view wx:if="{{!detail}}" class="load loading"></view>
+					<block wx:if="{{detail}}">
+						<text class="text-left text-content" selectable="true">{{detail.NEWS_CONTENT}}</text>
+
+						<!-- pic begin -->
+						<view class="pics">
+							<image bindtap="url" data-url="{{item.cloudId}}" data-type="img" wx:key="key"
+								wx:for="{{detail.NEWS_PIC}}" class="loading" mode='widthFix' lazy-load="true"
+								src="{{item}}">
+							</image>
+						</view>
+						<!-- pic end -->
+					</block>
+				</scroll-view>
+			</view>
+		</view>
+	</view>
+	<!-- news detail END -->
+
+</block>
